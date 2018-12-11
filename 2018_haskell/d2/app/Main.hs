@@ -2,6 +2,7 @@ module Main where
 
 import Input
 import Checksum
+import PrototypeFabric
 
 main :: IO ()
 main = do
