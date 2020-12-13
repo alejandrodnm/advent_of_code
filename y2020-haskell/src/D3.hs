@@ -4,53 +4,55 @@ import Lib (getData)
 
 d3 :: IO ()
 d3 = do
-    skiMap <- getData "d3-input"
-    print $ snd $ foldl ski (0, 0) (tail skiMap)
-    let skiSlope' = skiSlope skiMap
-    print $ foldl (\acc s -> sTrees s * acc) 1 (map skiSlope' getSlopes)
+  skiMap <- getData "d3-input"
+  print $ snd $ foldl ski (0, 0) (tail skiMap)
+  let skiSlope' = skiSlope skiMap
+  print $ foldl (\acc s -> sTrees s * acc) 1 (map skiSlope' getSlopes)
 
 ski :: (Int, Int) -> String -> (Int, Int)
 ski (i, acc) row = (newI, newAcc)
-    where
-        l = length row
-        newI = if i + 3 < l then i + 3 else (i + 3) - l
-        newAcc = acc + (if '#' == row !! newI then 1 else 0)
+  where
+    l = length row
+    newI = if i + 3 < l then i + 3 else (i + 3) - l
+    newAcc = acc + (if '#' == row !! newI then 1 else 0)
 
-data Slope = Slope {
-    sRight :: Int,
+data Slope = Slope
+  { sRight :: Int,
     sDown :: Int,
     sCurrentDown :: Int,
     sCurrentI :: Int,
     sTrees :: Int
-} deriving Show
+  }
+  deriving (Show)
 
 getSlopes :: [Slope]
-getSlopes = [
-        Slope 1 1 0 0 0,
-        Slope 3 1 0 0 0,
-        Slope 5 1 0 0 0,
-        Slope 7 1 0 0 0,
-        Slope 1 2 0 0 0
-    ]
+getSlopes =
+  [ Slope 1 1 0 0 0,
+    Slope 3 1 0 0 0,
+    Slope 5 1 0 0 0,
+    Slope 7 1 0 0 0,
+    Slope 1 2 0 0 0
+  ]
 
 skiSlope :: [String] -> Slope -> Slope
 skiSlope skiMap slope = foldl skiRow slope skiMap
 
-skiRow  :: Slope -> String -> Slope
+skiRow :: Slope -> String -> Slope
 skiRow s row = if sCurrentDown s /= sDown s then s {sCurrentDown = sCurrentDown s + 1} else newS
-    where
-        l = length row
-        i = sCurrentI s
-        r = sRight s
-        newI = if i + r < l then i + r else (i + r) - l
-        newTrees = sTrees s + (if '#' == row !! newI then 1 else 0)
-        newS = s {
-                    -- Set it to one instead of zero because in this action
-                    -- we went down one row
-                    sCurrentDown = 1,
-                    sCurrentI = newI,
-                    sTrees = newTrees
-                 }
+  where
+    l = length row
+    i = sCurrentI s
+    r = sRight s
+    newI = if i + r < l then i + r else (i + r) - l
+    newTrees = sTrees s + (if '#' == row !! newI then 1 else 0)
+    newS =
+      s
+        { -- Set it to one instead of zero because in this action
+          -- we went down one row
+          sCurrentDown = 1,
+          sCurrentI = newI,
+          sTrees = newTrees
+        }
 
 --- Day 3: Toboggan Trajectory ---
 

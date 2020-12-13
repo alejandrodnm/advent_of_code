@@ -2,30 +2,31 @@ module D2 where
 
 import Data.List (elemIndices, intersect)
 
-data Password = Password {
-    pMin :: Int,
+data Password = Password
+  { pMin :: Int,
     pMax :: Int,
     pLetter :: Char,
     pValue :: String
-} deriving Show
+  }
+  deriving (Show)
 
 d2 :: IO ()
 d2 = do
-    rawData <- getData
-    let passwords = toPassword <$> rawData
-    print $ length $ filter isValid passwords
-    print $ length $ filter isValidNewPolicy passwords
+  rawData <- getData
+  let passwords = toPassword <$> rawData
+  print $ length $ filter isValid passwords
+  print $ length $ filter isValidNewPolicy passwords
 
 isValid :: Password -> Bool
 isValid p = pMin p <= times && times <= pMax p
-    where
-        times = length $ elemIndices (pLetter p) (pValue p)
+  where
+    times = length $ elemIndices (pLetter p) (pValue p)
 
 isValidNewPolicy :: Password -> Bool
 isValidNewPolicy p = matches == 1
-    where
-        ocurrences = elemIndices (pLetter p) (pValue p)
-        matches = length $ intersect [pMin p - 1, pMax p - 1] ocurrences
+  where
+    ocurrences = elemIndices (pLetter p) (pValue p)
+    matches = length $ intersect [pMin p - 1, pMax p - 1] ocurrences
 
 getData :: IO [String]
 getData = do
@@ -34,14 +35,13 @@ getData = do
 
 toPassword :: String -> Password
 toPassword raw = Password min max letter value
-    where
-        ws = words raw
-        (min', max') = break (=='-') (head ws)
-        min = read min'
-        max = read $ tail max'
-        letter = head $ ws !! 1
-        value = ws !! 2
-
+  where
+    ws = words raw
+    (min', max') = break (== '-') (head ws)
+    min = read min'
+    max = read $ tail max'
+    letter = head $ ws !! 1
+    value = ws !! 2
 
 --- Day 2: Password Philosophy ---
 

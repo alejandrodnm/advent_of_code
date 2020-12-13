@@ -1,18 +1,19 @@
 module D1 where
 
-import Data.Maybe ( fromMaybe )
+import Data.Maybe (fromMaybe)
 
 d1 :: IO ()
 d1 = do
-    dat <- getData
-    print $ productOf2EntriesThatSum2020 dat
-    print $ productOfEntriesThatSum2020 3 dat
-    -- My first tought was doing list comprehension but realized that with a
-    -- value of 1010 it might give a false positive since it will be read
-    -- twice.
-    -- Also I didn't wanted to create the subsequences.
-    -- let nums = [1010]
-    -- head [a*b | a <- nums, b <- nums, a + b == 2020] == 1020100
+  dat <- getData
+  print $ productOf2EntriesThatSum2020 dat
+  print $ productOfEntriesThatSum2020 3 dat
+
+-- My first tought was doing list comprehension but realized that with a
+-- value of 1010 it might give a false positive since it will be read
+-- twice.
+-- Also I didn't wanted to create the subsequences.
+-- let nums = [1010]
+-- head [a*b | a <- nums, b <- nums, a + b == 2020] == 1020100
 
 getData :: IO [Int]
 getData = do
@@ -21,33 +22,33 @@ getData = do
   pure values
 
 productOf2EntriesThatSum2020 :: [Int] -> Int
-productOf2EntriesThatSum2020 (x:xs) =
-    case try2Values x xs of
-      Just z -> z
-      Nothing -> productOf2EntriesThatSum2020 xs
+productOf2EntriesThatSum2020 (x : xs) =
+  case try2Values x xs of
+    Just z -> z
+    Nothing -> productOf2EntriesThatSum2020 xs
 productOf2EntriesThatSum2020 [] = 0
 
 try2Values :: Int -> [Int] -> Maybe Int
-try2Values x (y:ys) = if x+y == 2020 then Just (x * y) else try2Values x ys
+try2Values x (y : ys) = if x + y == 2020 then Just (x * y) else try2Values x ys
 try2Values _ [] = Nothing
 
 productOfEntriesThatSum2020 :: Int -> [Int] -> Int
 productOfEntriesThatSum2020 n xs = fromMaybe 0 (f n [] xs)
-    where
-        f :: Int -> [Int] -> [Int] -> Maybe Int
-        -- Stop at one instead of zero because we still have to compare
-        -- against one value
-        f 1 acc xs = tryValues acc xs
-        f _ _ [] = Nothing
-        f n acc (x:xs) =
-            case f (n-1) (x:acc) xs of
-              Nothing -> f n acc xs
-              a -> a
+  where
+    f :: Int -> [Int] -> [Int] -> Maybe Int
+    -- Stop at one instead of zero because we still have to compare
+    -- against one value
+    f 1 acc xs = tryValues acc xs
+    f _ _ [] = Nothing
+    f n acc (x : xs) =
+      case f (n -1) (x : acc) xs of
+        Nothing -> f n acc xs
+        a -> a
 
 tryValues :: [Int] -> [Int] -> Maybe Int
-tryValues acc (x:xs) =
-    let v = (x:acc) in
-    if sum v == 2020 then Just (product v) else tryValues acc xs
+tryValues acc (x : xs) =
+  let v = (x : acc)
+   in if sum v == 2020 then Just (product v) else tryValues acc xs
 tryValues _ [] = Nothing
 
 --- Day 1: Report Repair ---

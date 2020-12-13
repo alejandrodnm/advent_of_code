@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: regex-compat-0.95.2.0@sha256:2eb608f9370c6b6c8ffacad059a6f74099192b73cc74ba4b321ee650e44f53b4,1260
+    pantry-tree:
+      size: 262
+      sha256: 5ac825f65ba4b0d25c8421c0dc6a3e15d43bb1cbfa7e19bcfba0f404918ab1a3
+  original:
+    hackage: regex-compat-0.95.2.0
 snapshots:
 - completed:
     size: 533252
