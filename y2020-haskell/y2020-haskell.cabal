@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f88aa9804ee79a3d01543ba944d74d825f0f897d70bfebf679185d1c3432734d
+-- hash: c1b02eaa73526adc0e4e96d80f010b9d472a08d831a403f22ac160d370058d11
 
 name:           y2020-haskell
 version:        0.1.0.0
@@ -33,6 +33,8 @@ library
       D2
       D3
       D4
+      D5
+      D6
       Lib
   other-modules:
       Paths_y2020_haskell
